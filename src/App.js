@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from 'components/Header'
+import { useEffect } from 'react'
+import { Route, Switch } from 'react-router'
+import productApi from './api/productApi'
+import NotFoundPage from './components/NotFound'
+import CounterFeature from './features/Counter'
+import SongFeature from './features/Song'
+import TodoFeature from './features/Todo/'
 
 function App() {
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const productList = await productApi.getAll()
+      console.log(productList)
+    }
+    fetchProduct()
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Switch>
+        <Route path="/" component={Header} exact />
+        <Route path="/todos" component={TodoFeature} exact />
+        <Route path="/counter" component={CounterFeature} exact />
+        <Route path="/songs" component={SongFeature} exact />
+        <Route component={NotFoundPage} />
+      </Switch>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

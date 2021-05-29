@@ -1,0 +1,8 @@
+.song-list {
+    display: flex;
+    list-style-type: none;
+    flex-flow: row nowrap;
+    & > li {
+        padding: 0 20px;
+    }
+}
