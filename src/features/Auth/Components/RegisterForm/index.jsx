@@ -4,13 +4,21 @@ import InputField from '../../../../components/Form-Control/InputField';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Avatar, Button, makeStyles, Typography } from '@material-ui/core';
+import { Avatar, Button, makeStyles, Typography, LinearProgress } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import PasswordField from 'components/Form-Control/PasswordField';
+import { useSnackbar } from '../../../../../node_modules/notistack/dist/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    position:'relative'
     // paddingTop: theme.spacing(1),
+  },
+  progress: {
+    position: 'absolute',
+    top: theme.spacing(1),
+    left: 0,
+    right:0
   },
   avatar: {
     margin: '0 auto',
@@ -55,31 +63,34 @@ function RegisterForm(props) {
     },
     resolver: yupResolver(schema),
   });
-  const handleFormSubmit = (values) => {
+  const handleFormSubmit = async (values) => {
     const { onSubmit } = props;
     if (onSubmit) {
-      onSubmit(values);
+     await onSubmit(values);
     }
-    form.reset();
   };
+  const {isSubmitting} = form.formState
   return (
-    <div className={classes.root}>
-      <Avatar className={classes.avatar}>
-        <LockOutlined></LockOutlined>
-      </Avatar>
-      <Typography className={classes.title}>Create An Account !</Typography>
+   <>
+      { isSubmitting && <LinearProgress className={classes.progress} />}
+      <div className={classes.root}>
+        <Avatar className={classes.avatar}>
+          <LockOutlined></LockOutlined>
+        </Avatar>
+        <Typography className={classes.title}>Create An Account !</Typography>
 
-      <form onSubmit={form.handleSubmit(handleFormSubmit)}>
-        <InputField form={form} name="fullName" label="FullName" />
-        <InputField form={form} name="email" label="Email" />
-        <PasswordField form={form} name="password" label="Password" />
-        <PasswordField form={form} name="retypePassword" label="RetypePassword" />
+        <form onSubmit={form.handleSubmit(handleFormSubmit)}>
+          <InputField form={form} name="fullName" label="FullName" />
+          <InputField form={form} name="email" label="Email" />
+          <PasswordField form={form} name="password" label="Password" />
+          <PasswordField form={form} name="retypePassword" label="RetypePassword" />
 
-        <Button type="submit" className={classes.submitBtn} fullWidth variant="contained" color="primary">
-          Sign Up
+          <Button type="submit" className={classes.submitBtn} fullWidth variant="contained" color="primary">
+            Sign Up
         </Button>
-      </form>
-    </div>
+        </form>
+      </div>
+      </>
   );
 }
 

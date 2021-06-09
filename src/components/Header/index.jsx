@@ -1,8 +1,10 @@
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
+import Close from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import { IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -28,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     backgroundImage: 'linear-gradient(120deg, #f6d365 0%, #fda085 100%)',
   },
+  closeForm: {
+    position: 'absolute',
+    top: 0,
+    right:0
+  }
 }));
 
 function Header() {
@@ -73,13 +80,13 @@ function Header() {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
+        <IconButton onClick={handleClose} className={classes.closeForm}>
+          <Close />
+        </IconButton>
         <DialogContent>
-          <Register />
+          <Register closeDialog={handleClose} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
         </DialogActions>
       </Dialog>
     </div>

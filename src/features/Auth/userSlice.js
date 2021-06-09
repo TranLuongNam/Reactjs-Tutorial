@@ -7,10 +7,10 @@ export const register = createAsyncThunk(
     async (payload) => {
         const data = await userApi.register(payload)
         console.log('data:', data);
-        console.log('data.user:', data.user);
         localStorage.setItem('access_token', data.jwt)
         localStorage.setItem('user', JSON.stringify(data.user))
-        return data.user
+        console.log('data.user:', data.data.user);
+        return data.data.user
     }
 )
 const userSlice = createSlice({

@@ -20,47 +20,49 @@ PasswordField.propTypes = {
 function PasswordField(props) {
   const [showPassword, setShowPassword] = useState(false);
   const { name, form, label, disabled } = props;
-  const { formState: { errors } } = form;
+  // const { formState: { errors } } = form;
+  // const { form, name, label } = props;
+  const { control } = form;
   // const { errors } = formState;
-  const hasError = errors[name];
+  // const hasError = errors[name];
   const toggleShowPassword = () => {
     setShowPassword((x) => !x);
   };
   // console.log(errors, formState.touchedFields[name]);
   return (
-    <FormControl error={!!hasError} fullWidth margin="normal" variant="outlined">
-      <InputLabel htmlFor={name}>{label}</InputLabel>
+    <div>
       <Controller
-        id={name}
         name={name}
-        control={form.control}
-        type={showPassword ? 'text' : 'password'}
-        label={label}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton aria-label="toggle password visibility" onClick={toggleShowPassword} edge="end">
-              {showPassword ? <Visibility /> : <VisibilityOff />}
-            </IconButton>
-          </InputAdornment>
-        }
-        render={({ field: { onChange, onBlur, value, name }, fieldState: { invalid, error } }) => (
-          <OutlinedInput
-            margin="normal"
-            variant="outlined"
-            fullWidth
-            label={label}
-            error={invalid}
-            helperText={error?.message}
-            onChange={onChange}
-            onBlur={onBlur}
-            name={name}
-            value={value}
-            disabled={disabled}
-          />
+        control={control}
+        render={({ field: { onChange, onBlur, value, name }, fieldState: { invalid, isTouched, error } }) => (
+          <>
+            <FormControl error={isTouched && invalid} fullWidth margin="normal" variant="outlined">
+              <InputLabel htmlFor={name}>{label}</InputLabel>
+              <OutlinedInput
+                id={name}
+                error={invalid}
+                type={showPassword ? 'text' : 'password'}
+                label={label}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton aria-label="toggle password visibility" onClick={toggleShowPassword} edge="end">
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                helperText={error?.message}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                disabled={disabled}
+              />
+            </FormControl>
+            <FormHelperText error={invalid}>{error?.message}</FormHelperText>
+          </>
         )}
       />
-      <FormHelperText>{errors[name]?.message}</FormHelperText>
-    </FormControl>
+
+    </div>
   );
 }
 
